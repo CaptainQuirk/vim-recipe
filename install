@@ -1,0 +1,58 @@
+#!/bin/bash
+
+# depends yarn
+
+CONFIG_SRC_DIR=~/Documents/configuration/src
+RECIPE_PATH=~/Documents/configuration/recipes/vim
+CACHE_DIR=~/.cache/configuration
+
+sudo apt-get install vim-gnome
+
+if [ ! -d $CONFIG_SRC_DIR/.vim ];then
+    git clone https://github.com/CaptainQuirk/.vim.git $CONFIG_SRC_DIR/.vim
+fi
+
+if [ ! -d $HOME/.vim ]; then
+    ln -s $CONFIG_SRC_DIR/.vim $HOME/.vim
+fi
+
+cd $CONFIG_SRC_DIR/.vim
+git pull
+
+git submodule update --init --recursive
+
+for file in $RECIPE_PATH/plugins/*; do
+    source $file
+done
+
+
+# DEPENDENCIES
+# ------------
+
+# AG
+brew install the_silver_searcher
+
+# Livedown
+yarn global add install livedown
+
+# eclim
+# For the moment, the installation is not fully automated
+# @link http://eclim.org/install.html#unattended-automated-install
+
+# # Download installer
+# wget https://github.com/ervandew/eclim/releases/download/2.7.0/eclim_2.7.0.jar -P $CACHE_DIR
+
+# # Download eclipse
+# wget http://ftp.fau.de/eclipse/eclipse/downloads/drops4/R-4.7-201706120950/eclipse-platform-4.7-linux-gtk-x86_64.tar.gz -P $CACHE_DIR
+
+# tar -zxf $CACHE_DIR/org.eclipse.jdt-4.7.zip
+# sudo mv $CACHE_DIR/eclipse /opt
+
+# Write template string to create .desktop file in /usr/share
+
+# # Download jdt
+# wget http://ftp.fau.de/eclipse/eclipse/downloads/drops4/R-4.7-201706120950/org.eclipse.jdt-4.7.zip -P $CACHE_DIR
+# unzip $CACHE_DIR/org.eclipse.jdt-4.7.zip -d jdt
+# sudo cp jdt/plugins/* /opt/eclipse/plugins/*
+# sudo cp jdt/features/* /opt/eclipse/features/*
+

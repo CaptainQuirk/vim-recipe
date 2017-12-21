@@ -1,0 +1,4 @@
+{
+  "name": "hillaryklingon/vim-recipe",
+  "description": "Installs vim with a custom config, plugins and their external dependencies"
+}

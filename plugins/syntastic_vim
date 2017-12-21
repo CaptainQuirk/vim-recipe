@@ -1,0 +1,4 @@
+#!/bin/bash
+
+yarn global add jsonlint
+yarn global add jshint
