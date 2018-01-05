@@ -26,6 +26,12 @@ for file in $VIM_RECIPE_PATH/plugins/*; do
 done
 
 
+# V wrapper
+# --------
+
+sudo cp --update $VIM_RECIPE_PATH/files/v /usr/local/bin
+
+
 # DEPENDENCIES
 # ------------
 
