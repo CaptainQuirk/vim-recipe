@@ -3,7 +3,7 @@
 # depends yarn
 
 CONFIG_SRC_DIR=~/Documents/configuration/src
-RECIPE_PATH=~/Documents/configuration/recipes/vim
+VIM_RECIPE_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CACHE_DIR=~/.cache/configuration
 
 sudo apt-get install vim-gnome
@@ -21,7 +21,7 @@ git pull
 
 git submodule update --init --recursive
 
-for file in $RECIPE_PATH/plugins/*; do
+for file in $VIM_RECIPE_PATH/plugins/*; do
     source $file
 done
 
