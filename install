@@ -36,7 +36,7 @@ sudo cp --update $VIM_RECIPE_PATH/files/v /usr/local/bin
 # ------------
 
 # AG
-brew install the_silver_searcher
+brew the_silver_searcher
 
 # Livedown
 yarn global add install livedown
