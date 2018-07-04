@@ -1,42 +1,42 @@
 #!/bin/bash
+# shellcheck disable=SC1090
 
 # depends yarn
 
 CONFIG_SRC_DIR=~/Documents/configuration/src
 VIM_RECIPE_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-CACHE_DIR=~/.cache/configuration
 
-sudo apt-get install vim-gnome
+shef apt vim-gnome
 
-if [ ! -d $CONFIG_SRC_DIR/.vim ];then
-    git clone https://github.com/CaptainQuirk/.vim.git $CONFIG_SRC_DIR/.vim
+if [ ! -d "$CONFIG_SRC_DIR/.vim" ];then
+    git clone https://github.com/CaptainQuirk/.vim.git "$CONFIG_SRC_DIR/.vim"
 fi
 
-if [ ! -d $HOME/.vim ]; then
-    ln -s $CONFIG_SRC_DIR/.vim $HOME/.vim
+if [ ! -d "$HOME/.vim" ]; then
+    ln -s "$CONFIG_SRC_DIR/.vim" "$HOME/.vim"
 fi
 
-cd $CONFIG_SRC_DIR/.vim
+cd "$CONFIG_SRC_DIR/.vim" || exit 1
 git pull
 
 git submodule update --init --recursive
 
 for file in $VIM_RECIPE_PATH/plugins/*; do
-    source $file
+    source "$file"
 done
 
 
 # V wrapper
 # --------
 
-sudo cp --update $VIM_RECIPE_PATH/files/v /usr/local/bin
+sudo cp --update "$VIM_RECIPE_PATH/files/v" /usr/local/bin
 
 
 # DEPENDENCIES
 # ------------
 
 # AG
-brew the_silver_searcher
+shef brew the_silver_searcher
 
 # Livedown
 yarn global add install livedown
