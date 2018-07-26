@@ -21,6 +21,57 @@ git pull
 
 git submodule update --init --recursive
 
+for SUBMODULE in $CONFIG_SRC_DIR/.vim/bundle/*; do
+    cd "$SUBMODULE" || exit 1
+
+    echo -e "Checking out master branch"
+    git checkout master
+
+    NAME=$(basename "$SUBMODULE")
+    echo -e "Updating remote references for submodule $NAME"
+    git remote update
+
+    echo -e "Compare master and remote origin master"
+    LOCAL=$(git rev-parse master)
+    REMOTE=$(git rev-parse origin/master)
+
+    if [ "$LOCAL" = "$REMOTE" ]; then
+        echo -e "Remote and local are the same. Nothing to do."
+        cd - || exit 2
+        continue
+    fi
+
+    BASE=$(git merge-base master origin/master)
+    if [ "$REMOTE" = "$BASE" ]; then
+        echo -e "Local is ahead. Weird. Ignoring"
+        cd - || exit 2
+        continue
+    fi
+
+    if [ "$LOCAL" != "$BASE" ]; then
+        echo -e "Local and remote have diverged. Really Weird. Ignoring"
+        cd - || exit 2
+        continue
+    fi
+
+    echo -e "Remote is ahead. Choose an option below"
+
+    OK=0
+    while [ "$OK" -eq 0 ]
+    do
+      read -p "Would you like to Pull changes from remote, Browse remote changes, or skip? (P/B/S) " OPT;
+      REMOTE_URL="$(git remote -v | grep fetch | head -1 | cut -f2 | cut -d' ' -f1 | sed -e's/git@/http:\/\//' -e's/\.git$//' | sed -E 's/(\/\/[^:]*):/\1\//')"
+      REMOTE_URL+="/compare/$BASE...master"
+      case "$OPT" in
+          P ) echo -e "Merging origin/master in master"; git stash; git merge master origin/master; OK=1; break;;
+          B ) xdg-open "$REMOTE_URL" >/dev/null;;
+          S ) OK=1; break;;
+      esac
+    done
+
+    cd - || exit 2
+done
+
 for file in $VIM_RECIPE_PATH/plugins/*; do
     source "$file"
 done
