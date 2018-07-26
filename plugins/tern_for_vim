@@ -1,8 +1,0 @@
-#!/bin/bash
-
-git clone https://github.com/ternjs/tern_for_vim.git ~/.vim/bundle/tern_for_vim
-yarn global add tern
-
-cd ~/.vim/bundle/tern_for_vim
-yarn install
-cd -
