@@ -24,6 +24,11 @@ git submodule update --init --recursive
 for SUBMODULE in $CONFIG_SRC_DIR/.vim/bundle/*; do
     cd "$SUBMODULE" || exit 1
 
+    if [ ! -d "$SUBMODULE/.git" ] && [ ! -f "$SUBMODULE/.git" ]; then
+        echo -e "$SUBMODULE is not a submodule. Nothing to do."
+        continue
+    fi
+
     echo -e "Checking out master branch"
     git checkout master
 
